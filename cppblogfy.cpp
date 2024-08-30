@@ -39,7 +39,7 @@ int main(void) {
     std::ofstream outdata;
     if(openUpEntry.is_open()) {
       strStream << openUpEntry.rdbuf();
-	    puts(writeToIndex);
+      puts(writeToIndex);
       outdata.open(writeToIndex);
       if (!outdata) { puts("Could not open file for writing."); break; }
       outdata << mdToHtml(strStream.str()) << std::endl;
