@@ -16,15 +16,7 @@
 
 #include "maddy/parser.h"
 
-std::string mdToHtml(const std::string &mdInput);
-
-std::string mdToHtml(const std::string &mdInput) {
-    std::shared_ptr<maddy::ParserConfig> config = std::make_shared<maddy::ParserConfig>();
-    std::istringstream markdownStream(mdInput);
-    std::shared_ptr<maddy::Parser> parser = std::make_shared<maddy::Parser>(config);
-    std::string htmlOutput = parser->Parse(markdownStream);
-    return htmlOutput;
-}
+static std::string mdToHtml(const std::string &mdInput);
 
 int main(void) {
   const std::filesystem::path generated{"generated"};
@@ -37,9 +29,9 @@ int main(void) {
     char genEntryDir[4096] = {'\0'};
     char writeToIndex[4096] = {'\0'};
     snprintf(genEntryDir, sizeof(genEntryDir) - 1, "generated/%s", dir_entry.path().filename().string().c_str());
-    std::string mdEntry = std::regex_replace(genEntryDir, std::regex(".md"), "");
-    std::filesystem::create_directories(mdEntry);
-    snprintf(writeToIndex, sizeof(writeToIndex) - 1, "%s/index.html", mdEntry.c_str());
+    std::string generatedEntry = std::regex_replace(genEntryDir, std::regex(".md"), "");
+    std::filesystem::create_directories(generatedEntry);
+    snprintf(writeToIndex, sizeof(writeToIndex) - 1, "%s/index.html", generatedEntry.c_str());
 
     std::string openMd = "markdown/" + dir_entry.path().filename().string(); 
     std::ifstream openUpEntry(openMd);
@@ -52,13 +44,17 @@ int main(void) {
       if (!outdata) { puts("Could not open file for writing."); break; }
       outdata << mdToHtml(strStream.str()) << std::endl;
       outdata.close();
-      
     }
     openUpEntry.close();
-    genEntryDir[0] = '\0';
-    writeToIndex[0] = '\0';
   }
-
   puts("Done");
   return EXIT_SUCCESS;
+}
+
+static std::string mdToHtml(const std::string &mdInput) {
+    std::shared_ptr<maddy::ParserConfig> config = std::make_shared<maddy::ParserConfig>();
+    std::istringstream markdownStream(mdInput);
+    std::shared_ptr<maddy::Parser> parser = std::make_shared<maddy::Parser>(config);
+    std::string htmlOutput = parser->Parse(markdownStream);
+    return htmlOutput;
 }
