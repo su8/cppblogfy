@@ -1,12 +1,14 @@
 Install `maddy` and do this:
 
 ```bash
-git clone https://github.com/progsource/maddy
-cd maddy && cmake . && make -j8 && sudo make install
+git clone https://github.com/su8/maddy
+cd maddy
+cp -r ../cppblogfy/maddy/* .
+cmake . && make -j8 && sudo make preinstall
 cd ../cppblogfy
 make -j8 # where 8 are cpu cores and/or threads
 sudo make install
-# from the same folder:
+# from the same terminal:
 cppblogfy
 ```
 
