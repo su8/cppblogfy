@@ -3,7 +3,7 @@ Install `maddy` and do this:
 ```bash
 git clone https://github.com/su8/maddy
 cd maddy
-cp -r ../cppblogfy/maddy/* .
+cp -r ../cppblogfy/maddy/* include
 cmake . && make -j8 && sudo make preinstall
 cd ../cppblogfy
 make -j8 # where 8 are cpu cores and/or threads
